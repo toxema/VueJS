@@ -10,18 +10,22 @@
 
 <body>
     <div id="app">
-        <div class="shadow-lg p-3 mx-5 my-2 bg-white rounded">
+        <div class="shadow-lg p-3 mx-5 my-2 bg-secondary rounded  ">
             {{ message }}
             <button type="button" class="btn btn-primary" @click="do1()">Do 1</button>
             <button type="button" class="btn btn-danger" @click="do2()">Do 2</button>
         </div>
-        <div v-if="tooltip_visible" class="shadow-lg p-3 mx-5 my-2 bg-white rounded">
-            Larger shadow
+        <div v-if="tooltip_visible" class="shadow-lg p-3 mx-5 my-2 bg-warning rounded">
+            Some Data is Changed. Please confirm what you done.
+            <button type="button" class="btn btn-primary " @click="apply()">Apply</button>
+            <button type="button" class="btn btn-danger" @click="cancel()">Cancel</button>
         </div>
         <div class="shadow-lg p-3 mx-5 my-2 bg-white rounded">
             <ol>
                 <li v-for="todo in todos">
-                    {{todo.text}}
+                    <div>{{todo.text}}<input v-model="todo.text" @change="change()" />
+
+                    </div>
                 </li>
             </ol>
         </div>
@@ -46,11 +50,23 @@
                 do1() {
                     console.log("do 1");
                     this.tooltip_visible = true;
+                    this.todos.push({ text: "New todos." });
                 },
                 do2() {
                     console.log("do 2");
                     this.tooltip_visible = false;
+                    this.todos.pop();
+                }, apply() {
+                    console.log("Apply");
+
+                }, cancel() {
+                    console.log("cancel");
+
+                }, change() {
+                    console.log("something changed");
+                    this.tooltip_visible = true;
                 }
+
             },
         })
 
