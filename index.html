@@ -10,20 +10,24 @@
 
 <body>
     <div id="app">
-        <div class="shadow-lg p-3 mx-5 my-2 bg-secondary rounded  ">
+        <div class="shadow   p-3 mx-5 my-2 bg-secondary rounded  ">
             {{ message }}
-            <button type="button" class="btn btn-primary" @click="do1()">Do 1</button>
-            <button type="button" class="btn btn-danger" @click="do2()">Do 2</button>
+            <button type="button" class="btn btn-primary" @click="show()">Show</button>
+            <button type="button" class="btn btn-danger" @click="hide()">Hide</button>
         </div>
-        <div v-if="tooltip_visible" class="shadow-lg p-3 mx-5 my-2 bg-warning rounded">
-            Some Data is Changed. Please confirm what you done.
-            <button type="button" class="btn btn-primary " @click="apply()">Apply</button>
-            <button type="button" class="btn btn-danger" @click="cancel()">Cancel</button>
+        <div v-if="tooltip_visible" class="shadow  p-3 mx-5 my-2 bg-warning rounded row">
+			<div class="col-lg-10">
+				Some Data is Changed. Please confirm what you done.
+			</div>
+			<div class="col-lg-2 text-right">
+				<button type="button" class="btn btn-primary " @click="apply()">Apply</button>
+				<button type="button" class="btn btn-danger" @click="cancel()">Cancel</button>
+			</div>
         </div>
-        <div class="shadow-lg p-3 mx-5 my-2 bg-white rounded">
+        <div class="shadow   p-3 mx-5 my-2 bg-white rounded">
             <ol>
                 <li v-for="todo in todos">
-                    <div>{{todo.text}}<input v-model="todo.text" @change="change()" />
+                    <div>{{todo.text}}<input v-model="todo.text" @change="change(todo.id)" />
 
                     </div>
                 </li>
@@ -38,22 +42,24 @@
         var app = new Vue({
             el: '#app',
             data: {
+				count:4,
                 message: 'Hello Vue!',
                 tooltip_visible: false,
                 todos: [
-                    { text: 'Learn JavaScript' },
-                    { text: 'Learn Vue' },
-                    { text: 'Build something awesome' }
+                    {id:0, text: 'Learn JavaScript' },
+                    {id:1, text: 'Learn Vue' },
+                    {id:2, text: 'Build something awesome' }
                 ]
             },
             methods: {
-                do1() {
-                    console.log("do 1");
+                show() {
+                    console.log("show");
                     this.tooltip_visible = true;
-                    this.todos.push({ text: "New todos." });
+                    this.todos.push({ id:this.count,text: "New todos." });
+					this.count++;
                 },
-                do2() {
-                    console.log("do 2");
+                hide() {
+                    console.log("hide");
                     this.tooltip_visible = false;
                     this.todos.pop();
                 }, apply() {
@@ -62,8 +68,8 @@
                 }, cancel() {
                     console.log("cancel");
 
-                }, change() {
-                    console.log("something changed");
+                }, change(id) {
+                    console.log(id+" something changed");
                     this.tooltip_visible = true;
                 }
 
