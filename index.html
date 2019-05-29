@@ -4,8 +4,12 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Vue js Test</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay"
+        crossorigin="anonymous">
+
+
 </head>
 
 <body>
@@ -16,18 +20,29 @@
             <button type="button" class="btn btn-danger" @click="hide()">Hide</button>
         </div>
         <div v-if="tooltip_visible" class="shadow  p-3 mx-5 my-2 bg-warning rounded row">
-			<div class="col-lg-10">
-				Some Data is Changed. Please confirm what you done.
-			</div>
-			<div class="col-lg-2 text-right">
-				<button type="button" class="btn btn-primary " @click="apply()">Apply</button>
-				<button type="button" class="btn btn-danger" @click="cancel()">Cancel</button>
-			</div>
+            <div class="col-lg-10">
+                <span style="font-size: 1.8em;  ">
+                    <i class="fas fa-arrow-circle-right">
+                    </i>
+
+                    </i>Some Data is Changed. Please confirm what you done.</span>
+            </div>
+            <div class="col-lg-2 text-right">
+                <button type="button" class="btn btn-primary " @click="apply()">Apply</button>
+                <button type="button" class="btn btn-danger" @click="cancel()">Cancel</button>
+            </div>
         </div>
         <div class="shadow   p-3 mx-5 my-2 bg-white rounded">
-            <ol>
-                <li v-for="todo in todos">
-                    <div>{{todo.text}}<input v-model="todo.text" @change="change(todo.id)" />
+            <ol class="list-group">
+                <li v-for="tag in tags" class="list-group-item">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            {{tag.name}}
+                        </div>
+                        <div class="col-lg-4">
+                            <input :id="'tag'+tag.id" v-model="tag.value" @change="change(tag.id)" />
+                        </div>
+
 
                     </div>
                 </li>
@@ -42,34 +57,35 @@
         var app = new Vue({
             el: '#app',
             data: {
-				count:4,
+                count: 4,
                 message: 'Hello Vue!',
                 tooltip_visible: false,
-                todos: [
-                    {id:0, text: 'Learn JavaScript' },
-                    {id:1, text: 'Learn Vue' },
-                    {id:2, text: 'Build something awesome' }
+                tags: [
+                    { id: 0, name: "Press", value: 'Learn JavaScript' },
+                    { id: 1, name: "Volume", value: 'Learn Vue' },
+                    { id: 2, name: "Heat", value: 'Build something awesome' }
                 ]
             },
             methods: {
                 show() {
                     console.log("show");
                     this.tooltip_visible = true;
-                    this.todos.push({ id:this.count,text: "New todos." });
-					this.count++;
+                    this.tags.push({ id: this.count, name: "new Tag ", value: "New Value." });
+                    this.count++;
                 },
                 hide() {
                     console.log("hide");
                     this.tooltip_visible = false;
-                    this.todos.pop();
+                    this.tags.pop();
                 }, apply() {
                     console.log("Apply");
-
+                    this.tooltip_visible = false;
                 }, cancel() {
                     console.log("cancel");
+                    this.tooltip_visible = false;
 
                 }, change(id) {
-                    console.log(id+" something changed");
+                    console.log(id + " something changed");
                     this.tooltip_visible = true;
                 }
 
