@@ -14,85 +14,120 @@
 
 <body>
     <div id="app">
+        <!--   HEADER BAR -->
         <div class="shadow   p-3 mx-5 my-2 bg-secondary rounded  ">
-            {{ message }}
-            <button type="button" class="btn btn-primary" @click="show()">Show</button>
-            <button type="button" class="btn btn-danger" @click="hide()">Hide</button>
+            <span style="font-size: 1.8em;  "> {{ message }}</span>
+            <button type="button" class="btn btn-primary" @click="addTag()">Add</button>
+            <button type="button" class="btn btn-danger" @click="deleteTag()">Delete</button>
         </div>
+        <!--  / HEADER BAR -->
+
+        <!--   WARNING  BAR -->
         <div v-if="tooltip_visible" class="shadow  p-3 mx-5 my-2 bg-warning rounded row">
             <div class="col-lg-10">
                 <span style="font-size: 1.8em;  ">
-                    <i class="fas fa-arrow-circle-right">
-                    </i>
-
-                    </i>Some Data is Changed. Please confirm what you done.</span>
+                    <i class="fas fa-arrow-circle-right"></i>
+                    Some Data is changed. Please confirm what you done.
+                </span>
             </div>
             <div class="col-lg-2 text-right">
                 <button type="button" class="btn btn-primary " @click="apply()">Apply</button>
                 <button type="button" class="btn btn-danger" @click="cancel()">Cancel</button>
             </div>
         </div>
-        <div class="shadow   p-3 mx-5 my-2 bg-white rounded">
-            <ol class="list-group">
-                <li v-for="tag in tags" class="list-group-item">
-                    <div class="row">
-                        <div class="col-lg-4">
-                            {{tag.name}}
-                        </div>
-                        <div class="col-lg-4">
-                            <input :id="'tag'+tag.id" v-model="tag.value" @change="change(tag.id)" />
-                        </div>
+        <!--   /WARNING  BAR -->
 
+        <!--   CONTENT  SECTOIN -->
+        <div class="shadow   p-3 mx-5 my-2 bg-white rounded">
+
+            <ol class="list-group">
+                <span v-if="tags.length == 0">
+                    There is no tags to show!
+                </span>
+                <li v-if="tags.length > 0" v-for="tag in tags" class="list-group-item">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <span style="font-size: 1.9em;">{{tag.id}}</span>{{tag.name}}
+                        </div>
+                        <div class="col-lg-7">
+                            <input :id="'tag'+tag.id" v-model="tag.value" @change="change(tag)" />
+                        </div>
+                        <div class="col-lg-2">
+                            <button type="button" class="btn btn-primary" @click="deleteTag(tag)"><i class="fas fa-trash-alt"></i></button>
+                        </div>
 
                     </div>
                 </li>
             </ol>
         </div>
+        <!--   /CONTENT  SECTOIN -->
     </div>
 
 
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script>
+
+        var taglist = [
+            { id: 0, name: "Press", value: 'Learn JavaScript' },
+            { id: 1, name: "Volume", value: 'Learn Vue' },
+            { id: 2, name: "Heat", value: 'Build something awesome' }
+        ];
+
+        var counter = 0;
+
         var app = new Vue({
             el: '#app',
             data: {
                 count: 4,
                 message: 'Hello Vue!',
                 tooltip_visible: false,
-                tags: [
-                    { id: 0, name: "Press", value: 'Learn JavaScript' },
-                    { id: 1, name: "Volume", value: 'Learn Vue' },
-                    { id: 2, name: "Heat", value: 'Build something awesome' }
-                ]
+                tags: taglist,
             },
             methods: {
-                show() {
-                    console.log("show");
-                    this.tooltip_visible = true;
+                addTag() {
+                    console.log("addTag");
                     this.tags.push({ id: this.count, name: "new Tag ", value: "New Value." });
                     this.count++;
                 },
-                hide() {
-                    console.log("hide");
-                    this.tooltip_visible = false;
+                deleteTag(tag) {
+                    var index = this.tags.indexOf(tag);
+                    if (index > -1) {
+                        this.tags.splice(index, 1);
+                    }
+                    console.log(tag);
+                    //  this.tags.pop(tag);
+                },
+                deleteTag() {
+                    console.log("deleteTag");
                     this.tags.pop();
-                }, apply() {
+                },
+                apply() {
                     console.log("Apply");
                     this.tooltip_visible = false;
-                }, cancel() {
+                },
+                cancel() {
                     console.log("cancel");
                     this.tooltip_visible = false;
 
-                }, change(id) {
-                    console.log(id + " something changed");
+                },
+                change(tag) {
+                    console.log(tag.id + " something changed");
                     this.tooltip_visible = true;
                 }
 
             },
-        })
+        });
 
+        function inc() {
+            counter++;
+            for (k = 0; k < taglist.length; k++) {
+                var tag = taglist[k];
+                tag.id += 1;
+            }
+        }
 
+        setInterval(inc, 10);
     </script>
 </body>
 
